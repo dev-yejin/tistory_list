@@ -1,0 +1,25 @@
+{
+  "name": "tistory_list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node uploadBoard.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-yejin/tistory_list.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-yejin/tistory_list/issues"
+  },
+  "homepage": "https://github.com/dev-yejin/tistory_list#readme",
+  "dependencies": {
+    "rss-parser": "^3.13.0"
+  }
+}
