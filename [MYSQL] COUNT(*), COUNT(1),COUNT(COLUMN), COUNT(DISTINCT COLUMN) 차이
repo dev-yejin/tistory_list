@@ -1,0 +1,25 @@
+
+- COUNT(*) & COUNT(1)
+    - SELECT 문에 의해 검색된 모든행을 조회
+    - NULL 및 중복 값 포함 (말그대로 모든 행을 조회)
+    - COUNT(*) 와 COUNT(1)은 동일한 방식으로 작동, 성능 차의 거의 없음
+    
+    ```sql
+    #COUNT(*)
+    SELECT COUNT(*) FROM 테이블
+    
+    #COUNT(1)
+    SELECT COUNT(1) FROM 테이블
+    ```
+    
+
+- COUNT(COLUMN)
+    - 컬럼이 NULL 이 아닌 값을 제외
+    
+    ```sql
+    SELECT COUNT(컬럼명) FROM 테이블
+    ```
+    
+
+- COUNT(DISTINCT COLUMN)
+    - 컬럼이 NULL, 중복 제거 후 갯수 조회
