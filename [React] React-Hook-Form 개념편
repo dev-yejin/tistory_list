@@ -1,0 +1,224 @@
+📝 들어가기 전
+Form은 웹 사이트나 어플리케이션에서 개발해 본 경험이 있다면 필수로 다뤄봤을 부분이다.
+
+로그인, 회원가입, 게시글을 등록하거나 등등 많은 부분에서 form을 쉽게 접할 수 있기 때문이다.
+
+react를 사용한 여러 프로젝트에서 매번 controlled component를 사용하여 Form을 개발했다.
+React에서는 state로 관리하면 실시간으로 사용자가 입력한 값을 확인할 수 있는 등의 이유로 추천하고 있기 때문이다.
+
+contolled component로 Form을 개발한다면,
+아래와 같이 input의 값을 관리하기 위해 state 변수들을 만들 것이다.
+그리고 각각 onChange 이벤트들을 추가하고, 우리는 input을 업데이트할 때마다 state가 함께 update되며 값을 controll할 수 있다.
+
+ import React, { useState } from 'react';
+ 
+ const App = () => {
+   const [username, setUsername] = useState('');
+   return (
+     <form className="App">
+       <input
+         type="text"
+         placeholder="Username"
+         name="username"
+         value={username}
+         onChange={e => setUsername(e.target.value)}
+       />
+       <input type="submit" />
+     </form>
+   );
+ };
+ 
+ export default App;
+만약에 우리가 많은 입력값들이 필요하게 된다면, 우리는 그만큼의 state를 추가하고, event함수들 또한 각각 만들어줘야한다.
+우리가 input의 값을 변경할 때마다 컴포넌트들은 그만큼 리랜더링 될 것이다.
+
+Form에 점점 추가되면 코드도 그만큼 길어지고 리랜더링되는 횟수도 비례하여 증가하겠지..?
+
+이런 점들을 보완하여 이전보다 쉽고 효율적으로 Form을 개발할 수 있도록 해주는 라이브러리가 React-Hook-Form이다.
+
+공부해보니 일단 코드가 간결해지고 가독성 또한 좋아지는 것을 느꼈다.
+
+딱 3가지 함수로 모든 걸 다 할 수 있는 느낌?!
+
+✍🏻 React-hook-form 공식문서를 번역한거라 의역이 많이 되어 있습니다.
+부족한 부분은 댓글로 마구마구 피드백 부탁드립니다 :)
+
+React-Hook-Form
+위에서 말한 것과 같이 Form을 보다 쉽고 효율적으로 개발할 수 있도록 도와주는 라이브러리이다.
+
+✅ 타 라이브러리 Formik, Redux Form과 비교했을 때 가장 뛰어난 성능을 보여준다.
+
+✅ 불필요한 리랜더링을 제거하고, 작성해야하는 코드의 양을 줄여준다.
+
+→ provider 방식 대신 비제어 컴포넌트(ref)방식을 사용해 불필요한 랜더링을 제거한다 
+(비제어 컴포넌트 방식에 대해서는 아래에서 더 자세히 다룰 예정)
+✅ 유연하고, 확장 가능하고 또한, 유효성 검사도 쉽게 할 수 있다.
+
+✅ Fast Mounting → 로딩 속도가 빠르다.
+
+✅ 라이브러리가 가볍다.
+
+React Hook Form 사용하기
+// 라이브러리 설치
+npm install react-hook-form
+// 라이브러리 import하기 
+import { useForm } from 'react-hook-form';
+✔️ react-hook-form은 3개의 props를 가지고 있다.
+
+const { register, handleSubmit, formState: { errors } } = useForm();
+✔️ input 입력값 작성하기
+
+→ ref에 위에서 선언해준 register props 적어주기
+
+<input
+  type="text"
+  placeholder="Username"
+  name="username"
+  ref={register}
+/>
+✔️ form의 onSubmit 함수를 만들어준다.
+
+→ data에는 Form 입력값들이 들어올 예정
+
+const onSubmit = (data) => {
+  console.log(data);
+};
+✔️ onSubmit props로 handleSubmit 함수를 추가하고 submit 함수를 콜백함수로 전달해준다.
+
+<form className="App" onSubmit={handleSubmit(onSubmit)}>
+✔️ onSubmit 할 경우
+
+// 전체 코드
+const App = () => {
+  return (
+    <form className="App" onSubmit={handleSubmit(onSubmit)} >
+      <input {...register('userName')}/>
+      <input {...register('email')}/>
+      <input {...register('password')}/>
+    </form>
+  );
+};
+onSubmit 함수가 실행되고 아래와 같이 콘솔이 찍힐 것이다
+
+
+✅ register 함수 : {…register(name)}
+
+✔️ 이 함수를 통해 uncontorlled component를 hook과 연결하여 유효성 체크를 하고, 폼을 submit할 때 한꺼번에 모아서 제출이 가능하도록 해준다.
+
+<input {...register('userName')}/>
+→ 즉, 해당 name의 state를 만들어서 관리한다고 볼 수 있다.
+(ex) userName이라는 input을 값을 관리한다
+
+✏️ 해당 input에 대한 errors를 체크하고 싶으면
+
+const { register, handleSubmit, errors } = useForm();
+위에 errors라는 함수에 errors.userName처럼 확인하고 싶은 input의 name값을 key처럼 사용할 수 있다.
+
+{errors.username && <p>Username required</p>}
+
+
+✅ Form 유효성 체크 또한 너무 간단하게 가능하다.
+
+✔️ 아래와 같이 validation을 사용할 수 있다.
+
+<input {...register("firstName", { required: true, maxLength: 20 })} />
+✔️ 지원 가능 유효성 검사
+
+required → 필수항목
+min → 입력에 허용되는 최소값
+max → 입력에 허용되는 최대값
+minLength → 입력에 허용되는 최소 길이
+maxLength → 입력에 허용되는 최대 길이
+pattern → 정규식
+validate → 콜백함수로 커스텀하게 유효성 체크 가능
+import React from "react";
+import { useForm } from "react-hook-form";
+
+export default function App() {
+  const { register, handleSubmit, formState:{ errors } } = useForm();
+  const onSubmit = data => console.log(data);
+   
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register("firstName", { required: true, maxLength: 20 })} />
+      <input {...register("lastName", { pattern: /^[A-Za-z]+$/i })} />
+      <input type="number" {...register("age", { min: 18, max: 99 })} />
+      <input type="submit" />
+    </form>
+  );
+}
+📌 React-Hook-Form 핵심 Point
+✍🏻 uncontrolled component(비제어)를 사용한다.
+📌 제어 컴포넌트와 비제어 컴포넌트의 차이는 뭘까?
+
+1. 제어 컴포넌트 controlled component
+
+✅ useState hook을 통해 state를 만들어 사용한다!
+
+  const [inputText, setInputText] = useState(""):
+inputText state로 값을 관리하고 수정할 때에도 setInputText의 값을 변경해준다.
+사용자가 변경할때마다 onchange로 input 값을 변경할 수 있다.
+사용자가 타이핑할 때마다 react state는 변경되고 사용자는 계속 변경된 값을 볼 수 있다.
+    <input
+      type="text"
+      value={inputText}
+      onChange={(e) => setInputText(e.target.value)}
+    />
+✔️ React state에 값을 저장하여 값에 접근할 수 있다.
+✔️ 사용자의 이벤트가 발생할 때마다 state로 변경되기 때문에 즉시 유효성 검사를 할 수 있다.
+
+    import React, { useState } from "react";
+     const Controlled = () => {
+      const [inputText, setInputText] = useState("");
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(inputText);
+      };
+    return (
+        <form>
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
+          <button onClick={handleSubmit}>Submit</button>
+        </form>
+      );
+    };
+    export default Controlled;
+2. 비제어 컴포넌트 uncontrolled component
+
+✅ useRef를 통해 직접 DOM 요소에 접근하여 값을 가져온다.
+
+✔️ input과 같은 요소들의 값이 react로 관리되지 않고 내부적으로 저장되기 때문에 uncontrolled component이다.
+✔️ 우리는 직접 input 요소에 접근하여 값을 가져올 수 있다.
+
+기존 HTML From input 요소와 비슷하다
+ import React, { useRef } from "react";
+ const Uncontrolled = () => {
+   const inputRef = useRef(null);
+ const handleSubmit = (e) => {
+     e.preventDefault();
+     console.log(inputRef.current.value);
+   };
+ return (
+     <form>
+       <input type="text" ref={inputRef} />
+       <button onClick={handleSubmit}>Submit</button>
+     </form>
+   );
+ };
+ export default Uncontrolled;
+input과 button으로 만들어진 form이 있다.
+React에서는 DOM요소에 접근하고 싶으면 useRef를 사용해야한다.
+useRef는 값을 가지고 있는 현재 속성에 대한 객체를 만들어준다.
+이 참조 값으로 값에 접근할 수 있게 된다.
+ // useRef hook을 통해 참조값을 만들고,
+ const inputRef = useRef(null);
+ // input 태그에 이 참조값을 전달한다.
+ <input type="text" ref={inputRef} />
+최종적으로 Form 을 submit할 때 input 값을 불러오려면 아래와 같이 사용한다.
+     inputRef.current.value
+📝 참고
+https://blog.devgenius.io/the-easiest-way-to-deal-with-forms-in-react-ad6bc1250829
+https://react-hook-form.com/kr/get-started/
