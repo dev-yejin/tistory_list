@@ -1,0 +1,2 @@
+SELECT ROUTINE_SCHEMA, ROUTINE_NAME FROM information_schema.routines 
+WHERE LOWER(ROUTINE_DEFINITION) LIKE '% 원하는 문자열 %';
