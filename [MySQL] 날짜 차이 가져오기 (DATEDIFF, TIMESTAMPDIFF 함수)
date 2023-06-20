@@ -1,0 +1,27 @@
+- DATEDIFF
+    - 단순히 일 차이를 가져올 때 사용
+    - 날짜 1 - 날짜 2
+    
+    ```sql
+    SELECT DATEDIFF(날짜1, 날짜2);
+    SELECT DATEDIFF(NOW(), '2023-02-23 14:25:04')
+    ```
+    
+- TIMESTAMPDIFF
+    - 연, 분기, 월, 주, 일, 시, 분, 초 지정하여 가져올 때 사용하는 함수
+    - 날짜 1 - 날짜 2
+    - 단위
+        - SECOND : 초
+        - MINUTE : 분
+        - HOUR : 시
+        - DAY : 일
+        - WEEK : 주
+        - MONTH : 월
+        - QUARTER : 분기
+        - YEAR : 연
+    
+    ```sql
+    SELECT TIMESTAMPDIFF(단위, 날짜1, 날짜2);
+    
+    SELECT TIMESTAMPDIFF(MONTH, '2023-02-23 14:25:04', NOW())
+    ```
