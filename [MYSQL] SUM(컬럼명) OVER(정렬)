@@ -1,0 +1,25 @@
+- SUM(합할 컬럼명) OVER()
+  합하려고 하는 컬럼의 모든 값을 합함
+  NULL값인 데이터 제외하고 누적 계산
+- SUM(합할 컬럼명) OVER(누적 계산할 순서)
+  OVER는 SUM의 기준이 되는 값
+  NULL인 데이터 제외 누적 계산
+  중복인 데이터는 제거하고 누적계산한다
+
+# 예시
+  SELECT 
+      RE.COL1
+    ,	SUM(RE.WON) OVER (ORDER BY RE.COL1)
+  FROM (
+      SELECT 1 AS COL1, 100 AS WON UNION ALL
+      SELECT 1 AS COL1, 100 AS WON UNION ALL
+      SELECT 2 AS COL1, 200 AS WON UNION ALL
+      SELECT 2 AS COL1, 200 AS WON UNION ALL
+      SELECT 3 AS COL1, 300 AS WON UNION ALL
+      SELECT 3 AS COL1, NULL AS WON UNION ALL
+      SELECT 4 AS COL1, 400 AS WON 
+  ) RE
+  GROUP BY RE.COL1
+;
+- SUM(합할 컬럼명) OVER (PARTITION BY 그룹핑할 컬럼명 ORDER BY 누적 정렬할 기준)
+  PARTITION BY[MYSQL] SUM(컬럼명) OVER(정렬)
