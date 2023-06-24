@@ -1,0 +1,20 @@
+## 이슈 :
+
+- MYSQL 프로시저 DROP FAILED
+- metadata lock 걸린 상태
+
+### 실행중인 트랜잭션 조회 쿼리
+
+SELECT * FROM information_schema.innodb_trx;
+
+### 해결방법
+
+trx_state : running 인 상태 kill 
+
+kill [trx_mysql_thread_id];
+
+### 방금 실행된 쿼리의 에러 사항 조회하는 쿼리
+
+SHOW COUNT(*) WARNINGS;
+
+SHOW WARNINGS;
