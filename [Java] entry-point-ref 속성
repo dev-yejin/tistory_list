@@ -1,0 +1,15 @@
+- 정의
+    - 요약: 인증이 필요한 리소스에 접근한 사용자가 인증되지 않았을 때 어떤 처리를 할지 알려줄 수 있음
+    - 예를 들어 → 로그인 페이지로 리다이렉션하거나, 401 Unauthorized 응답 코드 반환하거나, 사용자의 정의 처리 수행 가능
+    - **`AuthenticationEntryPoint`**를 설정하기 위해 사용되는 속성
+    - **`AuthenticationEntryPoint`**
+        - 인증이 필요한 리소스에 접근할 때 인증되지 않은 사용자의 처리 방식을 정의하는 인터페이스
+- 사용법
+    - **`<security:http>` 요소에서 사용되며 해당 속성의 값으로 등록된** **`AuthenticationEntryPoint`** 빈의 참조를 가리킵니다.
+    - 아래와 같이 bean으로 등록되어있어야함
+    
+    ```jsx
+    <bean id="customAuthenticationEntryPoint" class="com.pay.security.exception.JwtAuthenticationEntryPoint" />
+    ```
+    
+- 인증이 필요한 리소스에 접근하려는 사용자가 인증되지 않은 경우 호출
