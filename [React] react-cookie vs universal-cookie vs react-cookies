@@ -1,0 +1,41 @@
+- 이슈:
+    - F/E에서 쿠키를 설정하는 과정에서 어떤 곳에서는 react-cookie 라이브러리를 사용하고, 어디서는 react-cookies 를 사용하고 어디서는 universal-cookie를 사용하고 있었다..
+    - 이 라이브러리는 어떤 차이점이 있길래 각각 쓰이고 있는건가 정리하고 싶어서 남김
+
+### universal-cookie
+
+- Universal cookies for JavaScript
+- react-cookie보다 더 업그레이드된 모듈
+    - `[react-cookie](https://www.npmjs.com/package/react-cookie)` - Universal cookies for React
+    - `[universal-cookie-express](https://www.npmjs.com/package/universal-cookie-express)` - Hook cookies get/set on Express for server-rendering
+- 아래와 같이 사용자가 꽤 많은 걸로 봐서는 어느정도 보장이 되는 라이브러리로 보인다.
+
+
+### react-cookie
+- Universal cookies for **[React](https://facebook.github.io/react)**
+
+### Browser Example
+
+```jsx
+import Cookies from 'universal-cookie';
+ 
+const cookies = new Cookies();
+ 
+cookies.set('myCat', 'Pacman', { path: '/' });
+console.log(cookies.get('myCat')); // Pacman
+```
+
+### Server Example
+
+```jsx
+import Cookies from 'universal-cookie';
+ 
+const cookies = new Cookies(req.headers.cookie);
+ 
+console.log(cookies.get('myCat')); // Pacman or undefined if not set yet
+```
+
+### react-cookies
+
+- 제일 다운로드수가 적은 라이브러리
+- 해당 라이브러리는 웬만하면 지양한다.
