@@ -1,0 +1,14 @@
+👉 build 시 아래와 같이 es-lint warnig이 떴다.
+img elements must have an alt prop, either with meaningful text, or an empty string for decorative images.
+
+에러 캡쳐
+👉이유:
+
+ 변경 전 
+
+<img src="/img/dog.svg" />
+변경 후 
+
+아래와 같이 alt 속성을 추가해줬고, 해당 이미지가 안보일 시 보여지는 문구를 작성해주면 해결
+
+<img src="/img/dog.svg" alt="dog" />
