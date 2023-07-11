@@ -1,0 +1,47 @@
+5.모듈화
+- app.module에서 모든 컨트롤러, 서비스를 관리하는게 아니라,
+
+- 각 모듈에서 각 컨트롤러, 서비스를 담당하고, 그 모듈을 app.module에 import해서 사용한다.
+
+
+- App.module은 index와 같은 역할을 함
+
+
+6. DI dependency Injection
+providers에 service를 명시해줘야, 해당 서비스를 컨트롤러에 주입할 수 있다.
+→ 아래와 같이 해주면 NestJS가 자동으로 import해주기 때문에 편리함
+
+- Injectable() 이라는 데코레이터를 통해 해당 서비스를 주입하겠다고 명시하는 것
+
+
+7. Request, Response 객체
+request, response 데코레이터를 통해 해당 객체에 접근할 수 있다→ 이유: 왜냐면 NestJS 구조가 두개의 프레임워크 둘다 사용하기때문에 (Express, fastify(2배 더 빠름))
+특정 프레임워크의 객체에 접근해서 사용하다가 다른 프레임워크로 바꾸게 된다면 문제가 될 가능성이 있기 때문에 특정 객체에 직접 접근해서 사용하는 것은 좋지 않다.
+→ req나 res같은 Express 객체를 직접적으로 사용하는게 좋은 방법은 아님
+NestJS 방식만 사용한다면 특정 프레임워크로 전환할 때 문제가 되지 않음
+Express, Fastify 프레임워크 전환은 NestJS가 알아서 해줌
+8. 테스트
+두가지 종류
+Unit 테스트 : function 단위로 테스트 하는 것
+end-to-end(e2e) 테스트
+모든 시스템을 테스팅
+페이지에서 특정 페이지로 이동하는 사용자 관점의 테스트
+8-1. jest
+- NestJS테스트 방법
+
+- movies.service 를 테스트하고 싶다면, moivies.service.spec 이라는 파일을 생성해야 jest가 테스트할 수 있는 셋팅이 된다.
+
+
+- 테스트 코드 분석
+
+
+describe : 테스트 시작
+
+beforeEach: 테스트 하기 전에 실행 되는 코드를 작성
+
+it(”should be 4”, () ⇒ {
+	expect(2+4).toEqual(4)
+})
+- it (테스트 결과 커스텀) 
+
+- expect(테스트 예상 결과)
