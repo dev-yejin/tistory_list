@@ -1,0 +1,35 @@
+- 변경해야 할 부분
+환경별 properties 구분 (폴더 구조)
+spring-context.xml
+spring-datasource.xml
+server 탭 > tomcat 더블 클릭
+폴더 구조
+아래와 같이 환경별 생성
+ local:로컬, dev: 개발,prod: 운영
+이제 아래 폴더명으로 구성된 properties는 환경별로 세팅할 수 있도록 구성 완료
+
+환경별 폴더 & 변수 설정
+Server (tomcat) 설정
+- spring server 탭 > tomcat 더블 클릭
+
+General Information > Open launch configureation > Arguments 탭 클릭
+VM arguments에
+-Dspring.profiles.active=local 추가 후 Apply
+현재는 로컬환경이니까 local로 기본해놓고, 추후 각 server build시 catalina.out에서 해당 값 변경
+ 
+
+
+spring-context.xml
+위에 server에 추가한 spiring.profiles.active를 동적 변수로 할당 (D빼고 넣는다고 생각하면 됨)
+
+spiring-datasource.xml
+마찬가지로 server에 할당한 변수를 아래에 추가
+
+각 환경별 서버 세팅
+ 각 서버에서 catlinaout.sh 내부 JAVA_OPT에 아래 코드 한 줄을 추가해줘야 한다.
+톰캣 내부 > bin > vi catalina.sh
+개발환경은 spring 위 폴더 구조의  dev로 되어있으니까 dev로 설정
+운영환경은 spring 위 폴더 구조의 prod로 되어있으니까 prod로 설정
+-Dspring.profiles.active=[환경변수]
+
+추가 예시
