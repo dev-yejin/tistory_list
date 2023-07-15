@@ -1,0 +1,190 @@
+🔎 들어가기 전
+B/E 파트에서 개발할 때는 데이터를 요청하기 보다는 데이터를 응답하는 입장이 되어 개발을 진행했다.
+그러다보니 데이터를 요청하는 부분에 대해서 깊게 생각할 기회가 없다가
+SMS 발송 파트를 개발하게 되었고, 그때 axios를 처음 접했다.
+
+그 후 계속 axios만 쓰다가 최근 들어 F/E파트에서 개발하며 fetch도 보게 되었다.
+
+단순히 둘다 비동기 HTTP 통신을 위해 사용하는 걸로 알고 있고, 그 둘의 차이점에 대해서는 자세히 모르고 있었다.
+
+문득 axios는 라이브러리이고, fetch는 내장 함수인데 왜 굳이 axios라는 라이브러리를 설치해서 쓰는거지? 라는 의문이 들었다.
+
+둘은 뭐가 다른걸까? 뭐가 더 효율적인걸까?
+
+이번 기회에 API 요청할 때 뭐가 더 좋은지 공부해보려고 한다.
+
+📍axios와 fetch 개념
+공통점
+axios와 fetch는 둘다 비동기 HTTP 통신을 위해 사용된다.
+
+비동기 통신이란?
+
+예를 들어,
+Velog에서 좋은 글을 만나 좋아요를 눌렀다.
+그런데 좋아요를 누르자 페이지가 새로고침 되었다.
+좋아요를 누를 때마다 페이지가 새로고침된다면..? 너무나 불편하겠지?
+이런 불편함을 방지하기 위해 사용되는 것이 비동기 통신이다.
+
+이제 Axios와 fetch에 대해 자세히 알아보자!
+
+📌Axios
+[axios 공식 문서 정의]
+
+브라우저, Node.js를 위한 Promise API를 활용하는 HTTP 비동기 통신 라이브러리
+
+✏️특징
+장점
+
+폭넓은 브라우저 호환성(크로스 브라우징에 신경을 많이 썼다고 한다)
+Promise(ES6) API를 사용
+response 시 json 형태로 반환
+XSRF 보호 가능XSRF, 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록 등)를 특정 웹사이트에 요청하게 하는 공격
+인터셉터 가능1) 요청할때 2) 응답 받을때 중간에 가로챈 후 공통으로 처리
+ex)
+-axios 요청할 때 매번 겹치는 url을 기본으로 설정하고 싶을 때
+-헤더를 공통으로 적용하고 싶을 떄
+-에러가 발생했을 때 공통으로 처리하고 싶을때
+단점
+axios는 라이브러리이다. 모듈을 설치 후 사용할 수 있다.
+
+✏️설치방법
+	// npm 사용
+    $ npm install axios
+    
+    // bower 사용
+    $ bower install axios
+    
+    // yarn 사용
+    $ yarn add axios
+    
+    //jsDelivr CDN 사용하기:
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+	//unpkg CDN 사용하기:
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   
+✏️사용법
+내가 자주 사용하는 방법
+
+	
+	// 1번
+	const API = axios.create({
+      baseURL: 'https://some-domain.com/api/',
+      timeout: 1000,
+      headers: {'X-Custom-Header': 'foobar'}
+    });
+
+	API.get(url, params, config)
+	API.post(url, params, config)
+
+	// 2번
+    axios({
+      method: 'post',
+      url: '/user/12345',
+      data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+      }
+    });
+- 그외 방법들
+방법 1.
+
+	const axios = require('axios')
+    
+    axios.get('/user?ID=12345')
+		.then(response => console.log(response)) // 성공 핸들링
+		.catch(error=>console.log(error)) // 에러 핸들링
+		.then(something => something) // 항상 실행되는 영역
+방법 2.
+
+// get 요청	
+axios.get('/user', {
+            params : {
+                ID: 12345
+            }
+        })
+		.then(response => console.log(response)) // 성공 핸들링
+		.catch(error=>console.log(error)) // 에러 핸들링
+		.then(something => something) // 항상 실행되는 영역
+
+//post 요청
+axios.post('/user',{
+          firstName: 'yejin',
+          lastName: 'jo'
+        })
+		.then(response => console.log(response)) // 성공 핸들링
+		.catch(error=>console.log(error)) // 에러 핸들링
+		.then(something => something) // 항상 실행되는 영역
+방법 3. async await 함께 사용
+
+    async function getUser() {
+      try {
+        const response = await axios.get('/user?ID=12345');
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+axios 메소드 명령어
+
+	axios.request(config)
+    axios.get(url[, config])
+    axios.delete(url[, config])
+    axios.head(url[, config])
+    axios.options(url[, config])
+    axios.post(url[, data[, config]])
+    axios.put(url[, data[, config]])
+    axios.patch(url[, data[, config]])
+
+ps. 명령어 메소드를 사용시 'url', 'method', 'data' 속성을 config에서 지정할 필요가 없습니다.
+📌Fetch
+[fetch 공식 문서 정의]
+
+HTTP 요청 전송 기능을 제공하는 WEB API
+
+✏️특징
+장점
+
+HTTP response 객체를 래핑한 Promise 객체를 반환-> 데이터 다루기 편리
+내장 라이브러리이기 때문에 업데이트 이슈 방지 가능
+단점
+
+인터셉터 불가
+JSON 형태로 반환하지 않아 .json()으로 변환해서 사용해야함
+axios와 비교 시 상대적으로 기능 부족
+✏️사용법
+fetch(url)
+	.then(response => response.json())
+  	.then(data=> console.log(data));
+// POST 메서드 구현 예제
+async function postData(url = '', data = {}) {
+  // 옵션 기본 값은 *로 강조
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE 등
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body의 데이터 유형은 반드시 "Content-Type" 헤더와 일치해야 함
+  });
+  return response.json(); // JSON 응답을 네이티브 JavaScript 객체로 파싱
+}
+
+postData('https://example.com/answer', { answer: 42 }).then((data) => {
+  console.log(data); // JSON 데이터가 `data.json()` 호출에 의해 파싱됨
+});
+❔axios vs fetch 어떤걸 더 선호할까?
+
+npm Trends에서 최근 1년 기준으로 다운로드 수를 axios와 react를 비교해보았다.
+(fetch는 라이브러리가 아니라 react 내장함수이기 때문에 비교 불가)
+당연히 react가 상승폭이 클 줄 알았는데 예상외로 axios가 상승폭이 컸다.
+
+
+💡결론
+react에서는 크로스 브라우징을 조금 더 신경 쓴 axios 모듈을 사용하는 것이 더 나아보인다.
+모듈을 설치하기 싫다면 내장라이브러리 fetch를 써야하지만 디테일한 작업은 못한다는 불편함을 감수해야한다! (예를 들어 인터셉터!)
