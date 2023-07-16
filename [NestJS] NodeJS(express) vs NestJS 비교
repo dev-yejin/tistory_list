@@ -1,0 +1,124 @@
+z✅ NestJS vs ExpressJS 비교 분석
+1. 아키텍처
+NestJS
+NestJS는 NodeJS프레임워크 중 하나로, ExpressJS 위에 Typescript 까지 겸비한 모듈화된 아키텍처이다.
+
+이전  ExpressJS나 Fastify와 달리 프레임워크 생성 시 이미 아키텍처가 잡혀있다는 점에서 차별화된다.
+
+즉, 개발자는 프레임워크에서 셋팅한 구조대로 개발을 진행해야한다.
+
+ 
+
+코드 샘플을 보면 아마 이해에 도움이 될 것 같다.
+
+프로젝트를 
+
+main.ts 
+NestJS가 실제로 애플리케이션을 생성하는 메인 파일이라고 볼 수 있다.
+
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+app.module.ts 
+모듈을 실제로 등록하는 파일이다.
+
+컨트롤러와 서비스 파일 등 실제 비즈니스 로직을 구현한 모듈들을 아래와 같이 각각 객체의 위치에 선언을 하여 등록해준다.
+
+providers에 service를 명시해줘야, 해당 서비스를 컨트롤러에 주입할 수 있다. (DI dependency Injection)
+
+NestJS가 자동으로 import해주기 때문에 편리하다.
+
+import { Module } from '@nestjs/common';
+import { MoviesController } from './movie/movie.controller';
+import { MoviesService } from './movie/movie.service';
+
+
+@Module({
+  imports: [],
+  controllers: [MoviesController],
+  providers: [MoviesService],
+})
+export class AppModule {}
+그럼 NestJS는  app.module.ts파일에 등록되어있는 모듈들을 모아 아래와 같이 NestFactory라는 내장 함수를 통하여 애플리케이션을 생성한다.
+
+애플리케이션을 생성할 때 모듈을 app.module.ts에 등록을 해줘야 NestJs는 이를 감지하여 생성한다.
+
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  await app.listen(3000);
+}
+bootstrap();
+app.controller.ts
+Controller는 클라이언트의 요청이 들어오는 파일이다.
+
+생성자를 통해 service를 주입하여 사용하고, 다양한 데코레이터를 통해 사용 가능하다.
+
+Controller에서 Service접근 시 수동으로 import 하지 않아도 해당 컨트롤러의 생성자에 서비스를 주입시켜 사용할 수 있다.
+
+express.js에서는 수동으로 import했다면, NestJs에 요청을 해서 import한다고 생각하면 된다.
+
+readOnly(불변성 유지): 해당 컨트롤러에서 서비스 수정하게될 가능성이 있기 때문에 해당 클래스 내부의 변수들을 바꾸지 못하게 하는것
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Delete,
+    Patch,
+    Body,
+    Query,
+  } from '@nestjs/common';
+  import { MoviesService } from './movies.service';
+  import { Movie } from './entities/movie.entity';
+  import { CreateMovieDto } from './dto/create-movie.dto';
+  
+  @Controller('movies')
+  export class MoviesController {
+    constructor(private readonly moviesService: MoviesService) {}
+  
+    @Get()
+    getAll(): Movie[] {
+      return this.moviesService.getAll();
+    }
+}
+app.service.ts
+Injectable() 이라는 데코레이터를 통해 해당 서비스를 주입하겠다고 명시하는 것
+
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Movie } from './entities/movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
+
+@Injectable()
+export class MoviesService {
+  private movies: Movie[] = [];
+
+  getAll(): Movie[] {
+    return this.movies;
+  }
+}
+위와 같이 
+
+- ExpressJS
+ExpressJS 공식문서에 정의된 것처럼  빠르고 자유롭고 가벼운 NodeJS 웹프레임워크이다.
+
+Fast, unopinionated, minimalist web framework for Node.js
+기본적으로 Javascript로 셋팅되어있지만, 개발자의 선택에 따라 TypeScript를 설치하여 사용할 수 있다.
+
+ 
+
+2. 안정적이고 확장 가능
+NestJS는 그에 비해 아직은 성장 중인 프레임워크이기 때문에 관련 소스를 비교적 찾기 어려울 수 있다.
+
+ 
+
+ 
+
+ 
