@@ -1,0 +1,15 @@
+다른 곳에서 UTF-8 인코딩 변경했는데, 
+
+Properties에서만 인코딩이 깨지는 현상이 발생했다.
+
+ 
+
+Properties 관련 인코딩 변경하러 가는 방법
+
+👉 Window > Preferences > General> Content-Types > Text 클릭 > Java Properties File 클릭
+
+ 
+
+아래 Default encoding : UTF-8로 변경
+
+Apply 클릭하면 인코딩이 정상적으로 된 properties를 확인할 수 있다.
