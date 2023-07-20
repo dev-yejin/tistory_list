@@ -1,0 +1,102 @@
+🔎들어가기 전
+실제로 프로시저와 함수는 실무에서 많이 쓰고 있다.
+
+그런데 누군가에게 둘의 차이가 뭐에요? 라는 질문을 들었을 경우 버벅이는 나 자신을 발견하고
+
+이번 포스팅의 주제로 결정하게 되었다.
+
+나처럼 이미 현업에서 많이 쓰고 있지만 명확하게 표현을 할 수 없거나,
+또는 둘의 차이를 잘 모르거나,
+잘못 알고 있는 분들께
+
+도움이 되기를! ✍️
+
+📍Procedure 프로시저는 무엇인가?
+일련의 쿼리를 마치 하나의 함수처럼 실행하기 위한 쿼리의 집합이다.
+즉, 하나의 작업을 수행하기 위한 쿼리들의 모음?
+
+프로시저 특징
+하나의 요청으로 여러 SQL문을 실행할 수 있다.
+서버에서 실행되기 때문에 속도가 빠르다
+리턴값이 있을 수도, 없을 수도 있다 (IN, OUT 즉, 유연하다)
+리턴값이 여러개 가능하다(OUT 여러개)
+단점 - 재사용성이 좋지 않다.
+	CALL 프로시저명(IN파라미터명, @OUT파라미터명)
+    EXECUTE 프로시저명(IN파라미터명, @OUT파라미터명)
+사용법
+CREATE OR REPLACE PROCEDURE 프로시저 이름 ( 
+	매개변수명1 [ IN || OUT || INOUT ] 데이터타입
+	, 매개변수명2 [ IN || OUT || INOUT ] 데이터타입 ... 
+) IS||AS 변수, 상수 등 선언 ( 선언부 ) 
+BEGIN 실행 문장 ( 실행부 ) 
+EXCEPTION 문장 //필수아님 
+END ;
+📍Function 함수
+위의 프로시저의 각 프로세스를 수행하기 위해 필요한 기능들을 함수
+
+함수 특징
+리턴값이 필수
+클라이언트에서 실행되기 때문에 프로시저보다는 느리다
+	SELECT 함수명(IN 파라미터명) FROM DUAL;
+사용법
+CREATE OR REPLACE FUNCTION 함수 이름
+     ( 매개변수명1 매개변수1타입,
+       매개변수명2 매개변수2타입 ... )
+  RETURN 데이터타입
+  IS||AS
+         변수, 상수 등 선언 ( 선언부 )
+  BEGIN
+         실행 문장 ( 실행부 )
+         RETURN 반환값    //필수
+         EXCEPTION 문장   //필수아님
+  END ;
+공통점
+미리 작성된 스크립트 구문을 일괄처리하는데 유용
+두 개의 차이는 뭘까?
+이 질문에 대한 대답 중
+'함수는 리턴값이 있고, 프로시저는 리턴값이 없다' 라는 대답이 있다.
+
+이 대답은 틀렸다고 할 수 있다.
+
+왜?
+프로시저도 리턴값을 가질 수 있기 때문이다.
+
+그렇다면 진짜 둘의 차이점은 뭘까?
+
+사용하는 용도에서 가장 큰 차이가 있다.
+
+일단, 프로시저는 로직을 기술하여 해당 업무 처리를 직접 하는 용도로 많이 사용된다.
+
+//로그인 하는 프로시저 (ID, PW입력받고 해당 회원의 ID 조회하는 프로시저)
+CREATE OR REPLACE PROCEDURE getMemberOne (
+		IN IN_ID VARCHAR(100)
+   , 	IN IN_PW VARCHAR(200)
+   
+   , 	OUT OUT_MEMBER_ID VARCHAR(100)
+) IS BEGIN 
+	SELECT MEMBER_ID
+    FROM MEMBER
+    WHERE ID = IN_ID
+    AND PW = IN_PW;
+END;
+함수는 로직을 도와주는 목적으로 사용된다.
+예를 들어, 여러 프로시저에서 중복되는 로직이 발생될 경우 또는 자주 쓰는 로직을 모듈화시키고 싶을 때 function으로 만들어 현재 하는 업무를 서포트 해주는 목적으로 사용된다.
+
+아래 예시와 같이 반복적으로 사용되는 특정 기능을 함수로 만들어 줄 수 있다.
+
+// DATE_FORMAT으로 바꿔주는 함수
+CREATE OR REPLACE FUNCTION testDate ( 
+	   IN_DATE DATETIME
+	, IN_FORMAT VARCHAR(200) 
+)
+RETURN VARCHAR(100)
+IS IN_FORMAT VARCHAR(100) DEFAULT NULL;
+      
+BEGIN 
+       IN_FORMAT = (CASE WHEN IN_FORMAT = 'YYYY-MM-DD hh:mm:ss' THEN DATE_FORMAT(IN_DATE, '%Y-%m-%d %H:%i:%s') END)
+       RETURN IN_FORMAT ;
+END 
+🧷참고자료
+출처: https://mjn5027.tistory.com/47
+
+출처: https://devshin93.tistory.com/63 [💖 멋진 나 💖]
