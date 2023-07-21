@@ -1,0 +1,30 @@
+WebSocket HandShake
+- 웹소켓 초기 연결을 설정하는 과정
+- 본래의 의미는 사람들이 서로 인사하거나 약속을 잡을 때 흔히 사용되는 행동.
+
+origin
+- Protocol, Host, Post 3개 부분으로 구성
+- Http://localhost:8080 
+3개 부분이 모두 동일한 경우만 동일한 Origin이라고 말함
+
+payload
+- 전송되는 데이터 자체
+
+websocket:mapping path 역할
+- 클라이언트가 해당 path로 접속하면 handler로 등록한 bean을 처리하겠다는 것
+- 그래서 bean 등록 후 해당 bean의 Id를 작성해줌
+
+Bower(프론드엔드  패키지 관리도구)
+- 트위터에서 만든 프론트엔드 패키지 리도구
+- 장점
+	
+프로젝트에서 사용하는 프론트엔드 언어의 버전 관리나 버전의 dependency를 부여하고, 
+프론트엔드 개발에서 흔히 사용되는 JQuery, Bootstrap 등의 패키지를 하나하나 찾아서 
+다운로드 받거나 CDN등을 활용하는 등 불필요한 수고를 덜어주는 유용한 모듈
+
+FTP
+- 파일 전송 프로토콜(File Transfer Protocol)의 약자
+
+
+ngWebSocket
+- angular 웹소켓
