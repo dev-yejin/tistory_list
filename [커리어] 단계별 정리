@@ -1,0 +1,9 @@
+1. Page(F/E or B/E) -> js, jsp (Ctrl + View)
+2. Page(F/E, B/E) -> js, jsp, sql, xml, java (Ctrl + View, java)
+3. Component -> Static Resource(js, html)
+4. Module, Class.... -> Design Pattern
+5. Refactoring -> 1~4번
+6. Framework -> 7~9번 선행학습 | Project Resource
+7. Network -> 개발 환경
+8. Infra -> 눈에 안보이는거
+9. Trend -> 내 욕심, 커리어
