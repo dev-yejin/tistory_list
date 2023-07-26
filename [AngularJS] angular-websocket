@@ -1,0 +1,54 @@
+개발 환경
+
+- F/E : angular 1.8.3
+
+## Client
+
+### angular-websocket 모듈 설치 (v2.0.1)
+
+- https://www.npmjs.com/package/angular-websocket
+
+### 설치된 npm 중 아래 모듈들을 경로: webContent >  lib > angular-websocket(폴더 생성) 후 아래로 복사
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8e66ce6-5c09-4a59-8e1a-544329236a05/Untitled.png)
+
+### main.js에 모듈 주입
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/db5faaaf-71b1-4ff0-b6b9-2c03383625c7/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/19a914df-c0ab-43ed-b199-5318a060d8ff/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5d7b9d1b-5d84-4d9b-affb-f0bbd47058c8/Untitled.png)
+
+### build 하기
+
+```jsx
+npm run build
+```
+
+- main.js 반영한다고 해서 webpack에 자동으로 반영되지 않기 때문에 다시 해줘야함
+- 이유
+    - main.jsp 에 선언된 require.js 경로가 아래로 잡혀있기 때문
+    - 수정한 main.js 경로
+        
+        ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8dc31970-24ad-4630-92af-209fbfd05547/Untitled.png)
+        
+    - webpack이 바라보는 main.js의 경로
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0225f62b-5c13-4774-895e-510c55520dde/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/06d08192-7f0b-4d61-8eaf-a64a4f0d51ea/Untitled.png)
+
+- 브라우저에 정상적으로 build 되었는지 확인
+
+### app.js에 socket 모듈 선언
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4ba432ca-65ac-4d70-814c-7b6ff466f4ee/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ec3ad3c5-6b7b-4fed-b9d4-3297cda2a7f5/Untitled.png)
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/41bcb27e-864e-4a5e-a6d3-4a40f18850af/Untitled.png)
+
+```jsx
+var ws = new $websocket(ws://연결한 서버 주소) -> http:ws / https: wss
+```
